@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Display</title>
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval'">
+</head>
+<body>
+  <h1>Hello World</h1>
+  <img src="/images/Acidcatalyzedhydration.jpg" width="300" />
+  
+  <!-- Container for dynamically loaded images -->
+  <div id="image-container"></div>
+
+  <script>
+    // This function runs when the page loads
+    window.onload = function() {
+      console.log('Page loaded, attempting to fetch images...');
+      
+      fetch('http://localhost:3000/api/images')
+        .then(res => {
+          console.log('API response:', res);  // Log the response
+          return res.json();
+        })
+        .then(data => {
+          console.log('Images data:', data);  // Log the image data
+          const container = document.getElementById('image-container');
+          data.forEach(img => {
+            const imageElement = document.createElement('img');
+            imageElement.src = `/images/${img.filename}`;
+            imageElement.alt = img.alt;
+            imageElement.width = 400;
+            container.appendChild(imageElement);
+          });
+        })
+        .catch(err => console.error('Error loading images:', err));
+    };
+  </script>
+</body>
+</html>

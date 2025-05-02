@@ -144,6 +144,7 @@
         </p>
       <h3></h3>
         <img src="images/" alt="" length="500" height="500">
+        <div id="image-container"></div>
         <p><em></em></p>
           <ul>
             <li>Markovnikov</li>
@@ -151,5 +152,23 @@
             <li>Rearrangment</li>
           </ul>
         </p>
+        <script>
+          // This function runs when the page loads
+          window.onload = () => {
+            fetch('http://localhost:3000/api/images')
+              .then(res => res.json())
+              .then(data => {
+                const container = document.getElementById('image-container');
+                data.forEach(img => {
+                  const imageElement = document.createElement('img');
+                  imageElement.src = `/images/${img.filename}`;
+                  imageElement.alt = img.alt;
+                  imageElement.width = 400;
+                  container.appendChild(imageElement);
+                });
+              })
+              .catch(err => console.error('Error loading images:', err));
+          };
+        </script>        
   </body>
 </html>
